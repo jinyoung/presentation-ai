@@ -1,17 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { usePresentationState } from "@/states/presentation-state";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 // Import our new components
+import SideBarDropdown from "@/components/auth/Dropdown";
+import { Brain } from "@/components/ui/icons";
 import { ThemeSelector } from "../theme/ThemeSelector";
-import { ShareButton } from "./buttons/ShareButton";
+import { ExportButton } from "./buttons/ExportButton";
 import { PresentButton } from "./buttons/PresentButton";
 import { SaveStatus } from "./buttons/SaveStatus";
-import { Brain } from "@/components/ui/icons";
-import SideBarDropdown from "@/components/auth/Dropdown";
+import { ShareButton } from "./buttons/ShareButton";
 
 interface PresentationHeaderProps {
   title?: string;
@@ -56,6 +57,9 @@ export default function PresentationHeader({ title }: PresentationHeaderProps) {
 
         {/* Share button - Only in presentation page, not outline */}
         {isPresentationPage && !isPresenting && <ShareButton />}
+
+        {/* Export button - Only in presentation page, not outline */}
+        {isPresentationPage && !isPresenting && <ExportButton />}
 
         {/* Present button - Only in presentation page, not outline */}
         {isPresentationPage && <PresentButton />}

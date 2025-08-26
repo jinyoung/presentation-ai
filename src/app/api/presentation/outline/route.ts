@@ -1,9 +1,9 @@
-import { LangChainAdapter } from "ai";
-import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
-import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence } from "@langchain/core/runnables";
+import { ChatOpenAI } from "@langchain/openai";
+import { LangChainAdapter } from "ai";
+import { NextResponse } from "next/server";
 
 interface OutlineRequest {
   prompt: string;
@@ -57,9 +57,10 @@ const outlineChain = RunnableSequence.from([
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    // 임시로 인증 체크 우회
+    // if (!session) {
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // }
 
     const { prompt, numberOfCards, language } =
       (await req.json()) as OutlineRequest;

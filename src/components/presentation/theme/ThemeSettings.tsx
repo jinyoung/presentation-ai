@@ -1,20 +1,22 @@
-import { usePresentationState } from "@/states/presentation-state";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { type Themes, themes } from "@/lib/presentation/themes";
-import { useTheme } from "next-themes";
 import { type ImageModelList } from "@/app/_actions/image/generate";
-import { ThemeModal } from "./ThemeModal";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { type Themes, themes } from "@/lib/presentation/themes";
+import { cn } from "@/lib/utils";
+import { usePresentationState } from "@/states/presentation-state";
+import { useTheme } from "next-themes";
+import { ThemeModal } from "./ThemeModal";
 
 export const IMAGE_MODELS: { value: ImageModelList; label: string }[] = [
+  { value: "dall-e-3", label: "DALL-E 3 (OpenAI)" },
+  { value: "dall-e-2", label: "DALL-E 2 (OpenAI)" },
   { value: "black-forest-labs/FLUX1.1-pro", label: "FLUX 1.1 [pro]" },
   { value: "black-forest-labs/FLUX.1-schnell", label: "FLUX.1 [schnell]" },
   {
@@ -127,7 +129,7 @@ export function ThemeSettings() {
       <div className="space-y-4">
         <Label className="text-sm font-medium">Image Generation Model</Label>
         <Select
-          value={imageModel || "black-forest-labs/FLUX.1-schnell-Free"}
+          value={imageModel || "dall-e-3"}
           onValueChange={(value) => setImageModel(value as ImageModelList)}
         >
           <SelectTrigger>

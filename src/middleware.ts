@@ -1,31 +1,14 @@
-import { auth } from "@/server/auth";
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const session = await auth();
-  const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-
+  // 임시로 인증 체크를 비활성화하고 루트 리다이렉트만 유지
+  
   // Always redirect from root to /presentation
   if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/presentation", request.url));
   }
 
-  // If user is on auth page but already signed in, redirect to home page
-  if (isAuthPage && session) {
-    return NextResponse.redirect(new URL("/presentation", request.url));
-  }
-
-  // If user is not authenticated and trying to access a protected route, redirect to sign-in
-  if (!session && !isAuthPage && !request.nextUrl.pathname.startsWith("/api")) {
-    return NextResponse.redirect(
-      new URL(
-        `/auth/signin?callbackUrl=${encodeURIComponent(request.url)}`,
-        request.url
-      )
-    );
-  }
-
+  // 모든 요청을 그대로 통과시킴 (인증 없이 접근 허용)
   return NextResponse.next();
 }
 

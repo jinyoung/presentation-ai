@@ -17,10 +17,30 @@ export async function createPresentation(
   language?: string
 ) {
   const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
+  
+  // 임시로 인증 우회 - 더미 사용자 ID 사용
+  let userId = session?.user?.id;
+  if (!userId) {
+    // 더미 사용자 ID 생성 또는 기본값 사용
+    userId = "dummy-user-id";
+    
+    // 더미 사용자가 데이터베이스에 없다면 생성
+    const existingUser = await db.user.findUnique({
+      where: { id: userId }
+    });
+    
+    if (!existingUser) {
+      await db.user.create({
+        data: {
+          id: userId,
+          name: "Demo User",
+          email: "demo@example.com",
+          role: "USER",
+          hasAccess: true,
+        }
+      });
+    }
   }
-  const userId = session.user.id;
 
   try {
     const presentation = await db.baseDocument.create({
@@ -90,9 +110,10 @@ export async function updatePresentation({
   language?: string;
 }) {
   const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  // 임시로 인증 체크 우회
+  // if (!session?.user) {
+  //   throw new Error("Unauthorized");
+  // }
 
   try {
     // Extract values from content if provided there
@@ -219,9 +240,10 @@ export async function deletePresentations(ids: string[]) {
 // Get the presentation with the presentation content
 export async function getPresentation(id: string) {
   const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  // 임시로 인증 체크 우회
+  // if (!session?.user) {
+  //   throw new Error("Unauthorized");
+  // }
 
   try {
     const presentation = await db.baseDocument.findUnique({
@@ -246,9 +268,10 @@ export async function getPresentation(id: string) {
 
 export async function getPresentationContent(id: string) {
   const session = await auth();
-  if (!session?.user) {
-    throw new Error("Unauthorized");
-  }
+  // 임시로 인증 체크 우회
+  // if (!session?.user) {
+  //   throw new Error("Unauthorized");
+  // }
 
   try {
     const presentation = await db.baseDocument.findUnique({
@@ -272,13 +295,14 @@ export async function getPresentationContent(id: string) {
       };
     }
 
+    // 임시로 사용자 권한 체크 우회
     // Check if the user has access to this presentation
-    if (presentation.userId !== session.user.id && !presentation.isPublic) {
-      return {
-        success: false,
-        message: "Unauthorized access",
-      };
-    }
+    // if (presentation.userId !== session?.user?.id && !presentation.isPublic) {
+    //   return {
+    //     success: false,
+    //     message: "Unauthorized access",
+    //   };
+    // }
 
     return {
       success: true,

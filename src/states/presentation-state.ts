@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { type Themes, type ThemeProperties } from "@/lib/presentation/themes";
 import { type ImageModelList } from "@/app/_actions/image/generate";
 import { type PlateSlide } from "@/components/presentation/utils/parser";
+import { type ThemeProperties, type Themes } from "@/lib/presentation/themes";
+import { create } from "zustand";
 
 interface PresentationState {
   currentPresentationId: string | null;
@@ -90,7 +90,7 @@ export const usePresentationState = create<PresentationState>((set) => ({
   outline: [],
   theme: "mystique",
   customThemeData: null,
-  imageModel: "black-forest-labs/FLUX.1-schnell-Free",
+  imageModel: "dall-e-3",
   presentationStyle: "professional",
   slides: [], // Now holds the new slide object structure
   savingStatus: "idle",
